@@ -1,0 +1,30 @@
+services:
+  api:
+    # A seção 'build' instrui o Docker Compose a construir a imagem.
+    build:
+      # 'context: .' define o diretório do projeto como contexto de build.
+      context: .
+      # 'dockerfile: Dockerfile' especifica qual arquivo usar.
+      dockerfile: Dockerfile
+
+    # Mapeia a porta 8000 do seu computador (host) para a porta 8000 do contêiner.
+    ports:
+      - "8000:8000"
+
+    # A seção 'volumes' é crucial para o desenvolvimento.
+    volumes:
+      # Mapeia o diretório atual ('.') para o diretório '/app' no contêiner.
+      # Isso garante duas coisas:
+      # 1. Live Reload: Alterações no seu código são refletidas instantaneamente.
+      # 2. Persistência de Dados: O banco 'escola.db' é salvo no seu computador,
+      #    não se perdendo quando o contêiner é recriado.
+      - .:/app
+
+    # A seção 'environment' define variáveis de ambiente para o contêiner.
+    environment:
+      # Passa a URL do banco de dados para a aplicação. Embora a aplicação
+      # possa ter um valor padrão, é uma boa prática tornar essa configuração explícita.
+      - DATABASE_URL=sqlite:///./escola.db
+
+    # Sobrescreve o comando padrão (CMD) do Dockerfile para habilitar o live-reload.
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
