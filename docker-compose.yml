@@ -1,5 +1,7 @@
 services:
   api:
+    # Define um nome fixo para o contêiner, facilitando a referência em comandos.
+    container_name: imersao-devops
     # A seção 'build' instrui o Docker Compose a construir a imagem.
     build:
       # 'context: .' define o diretório do projeto como contexto de build.
